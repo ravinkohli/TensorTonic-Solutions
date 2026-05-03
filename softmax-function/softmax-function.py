@@ -8,12 +8,6 @@ def softmax(x):
     """
     # Write code here
     x = np.array(x)
-    if x.ndim == 1:
-        x = x - np.max(x)
-        exp_x = np.exp(x)
-        return exp_x / np.sum(exp_x)
-    else:
-        x = x - np.max(x, axis=1, keepdims=True)
-        exp_x = np.exp(x)
-        return exp_x / np.sum(exp_x, axis=1, keepdims=True)
-    
+    max_x = np.max(x, axis=1, keepdims=True) if len(x.shape)>1 else np.max(x)
+    denom = np.sum(np.exp(x - max_x), axis=1, keepdims=True) if len(x.shape)>1 else np.sum(np.exp(x - max_x))
+    return np.exp(x - max_x)/denom
